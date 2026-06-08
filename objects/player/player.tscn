@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://dyj2d456pwdi"]
+
+[ext_resource type="Script" uid="uid://c02butvu7otd1" path="res://objects/player/player.gd" id="1_cqmt1"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_g7ett"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cqmt1"]
+margin = 0.005
+radius = 0.35
+height = 1.95
+
+[node name="Player" type="CharacterBody3D" unique_id=333527802]
+script = ExtResource("1_cqmt1")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=637594330]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.87114453, 0)
+current = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1094787007]
+shape = SubResource("CapsuleShape3D_cqmt1")
+
+[node name="SubViewport" type="CanvasLayer" parent="." unique_id=766451429]
+
+[node name="Control" type="Control" parent="SubViewport" unique_id=1739062113]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Button" type="Button" parent="SubViewport/Control" unique_id=531676212]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Label" type="Label" parent="SubViewport/Control" unique_id=1006900201]
+layout_mode = 1
+offset_right = 70.0
+offset_bottom = 179.0
+text = "beta v0.0.1
+Controls:
+LMB - break block.
+RMB - place block.
+WASD - moving.
+f - enable/disable fly mode.
+space - jump.
+ctrl - down.
+
+E - unlocks|locks mouse.
+With mouse you can select a block
+from bottom left row,which will 
+be placed
+
+"
+
+[node name="ColorRect" type="ColorRect" parent="SubViewport/Control" unique_id=477365477]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="itemsGrid" type="GridContainer" parent="SubViewport/Control" unique_id=1517095598]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="SubViewport/Control/itemsGrid" unique_id=1032735175]
+visible = false
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/Control/itemsGrid/PanelContainer" unique_id=1214476956]
+layout_mode = 2
+texture = ExtResource("2_g7ett")
+expand_mode = 3

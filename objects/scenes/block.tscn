@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bcrbup724xcg4"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_cxmq4"]
+
+[node name="Block" type="MeshInstance3D" unique_id=288097677]
+mesh = SubResource("ArrayMesh_cxmq4")

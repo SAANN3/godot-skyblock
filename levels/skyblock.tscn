@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dhbid8nulc2in"]
+
+[ext_resource type="Script" uid="uid://clofdmiyuayi5" path="res://levels/skyblock.gd" id="1_k4bma"]
+
+[node name="Skyblock" type="Node3D" unique_id=1056516443]
+script = ExtResource("1_k4bma")
+
+[node name="world" type="Node3D" parent="." unique_id=644875007]
+
+[node name="sky" type="Node3D" parent="." unique_id=1631301581]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="sky" unique_id=1241159611]
+transform = Transform3D(0.796857, -0.14753214, -0.5858783, 0.6041682, 0.19458495, 0.772734, -2.2255653e-09, -0.96972734, 0.24419056, 0, 1.0843542, 0)
+shadow_enabled = true

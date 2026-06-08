@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BlockResource" format=3 uid="uid://xy07vdficmgi"]
+
+[ext_resource type="Script" uid="uid://b7l1n6sdq0w5d" path="res://service/resources/block.gd" id="1_2ttyv"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_8ssox"]
+
+[resource]
+script = ExtResource("1_2ttyv")
+texture = ExtResource("2_8ssox")
+id = "godot"
+metadata/_custom_type_script = "uid://b7l1n6sdq0w5d"

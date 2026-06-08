@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BlockResource" format=3 uid="uid://c5g507s3gpqdt"]
+
+[ext_resource type="Script" uid="uid://b7l1n6sdq0w5d" path="res://service/resources/block.gd" id="1_newyu"]
+
+[sub_resource type="Gradient" id="Gradient_0o13y"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.24142471, 0.1972785, 0.13929278, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gcvp4"]
+gradient = SubResource("Gradient_0o13y")
+width = 60
+
+[resource]
+script = ExtResource("1_newyu")
+texture = SubResource("GradientTexture1D_gcvp4")
+id = "wood"
+metadata/_custom_type_script = "uid://b7l1n6sdq0w5d"
