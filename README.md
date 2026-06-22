@@ -26,11 +26,12 @@ Current project structure is:
 │   └── scenes    # scenes for objects, for example a node3d instance that acts as block. Gonna extend this later.
 ├── services      # Logic classes that i couldn't fit into `objects` folder.
 │   └── resources # Folder for ResourceService, which defines data structures.
+├── ui            # Ui elements.
 ├── storage       # Folder from which at the start items gonna be loaded. In future can be created something like 'mods' folder inside storage.
 │   └── objects   # There are stored resources, related to objects, which are loaded upon startup.
 └── types         # Types that i needed for my preference.
-    ├── optionals # As gdscript doesn't support generics, i have copied main class 'Optional' and slightly changed it, according to given type.
-    └── tuples    # Same here but for tuples.
+	├── optionals # As gdscript doesn't support generics, i have copied main class 'Optional' and slightly changed it, according to given type.
+	└── tuples    # Same here but for tuples.
 ```
 
 ## License

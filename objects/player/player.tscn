@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://dyj2d456pwdi"]
 
 [ext_resource type="Script" uid="uid://c02butvu7otd1" path="res://objects/player/player.gd" id="1_cqmt1"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_g7ett"]
+[ext_resource type="PackedScene" uid="uid://ga035onjp58t" path="res://ui/inventory/inventoryBar.tscn" id="2_g7ett"]
+[ext_resource type="PackedScene" uid="uid://dybodknfa54oq" path="res://ui/inventory/inventory.tscn" id="3_ssrue"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cqmt1"]
 margin = 0.005
@@ -29,10 +30,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Button" type="Button" parent="SubViewport/Control" unique_id=531676212]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="changelog" type="Label" parent="SubViewport/Control" unique_id=991732999]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -265.0
+offset_bottom = 413.0
+grow_horizontal = 0
+text = "changelog
+beta v0.0.1 - 2026-06-08:
+    beta release
+beta v0.0.2 - 2026-06-22:
+    added small ui elements, like 
+inventory and primitive menu."
 
 [node name="Label" type="Label" parent="SubViewport/Control" unique_id=1006900201]
 layout_mode = 1
@@ -48,8 +59,11 @@ space - jump.
 ctrl - down.
 
 E - unlocks|locks mouse.
+Also E - shows/hide inventory.
+Inventory can be used to move items
+to different cells.
 With mouse you can select a block
-from bottom left row,which will 
+from bottom left row,which will.
 be placed
 
 "
@@ -69,21 +83,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="itemsGrid" type="GridContainer" parent="SubViewport/Control" unique_id=1517095598]
+[node name="InventoryBar" parent="SubViewport/Control" unique_id=201634619 instance=ExtResource("2_g7ett")]
 layout_mode = 1
-anchors_preset = 2
+anchors_preset = 7
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -40.0
-offset_right = 40.0
+offset_bottom = 0.0
 grow_vertical = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="SubViewport/Control/itemsGrid" unique_id=1032735175]
+[node name="Inventory" parent="SubViewport/Control" unique_id=1086160268 instance=ExtResource("3_ssrue")]
 visible = false
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/Control/itemsGrid/PanelContainer" unique_id=1214476956]
-layout_mode = 2
-texture = ExtResource("2_g7ett")
-expand_mode = 3
+layout_mode = 1
+mouse_filter = 2

@@ -12,6 +12,10 @@ const REACH_RANGE: float = 10
 const GRAVITY: float = 0.5
 ## How far will player be able to jump on Y axis.
 const JUMP_STRENGTH: float = 15
+## Size of slots, that will be accounted in ui parts.
+const BAR_SIZE: int = 10
+## Inventory size.
+const INVENTORY_SIZE: int = 4 * BAR_SIZE
 ## Player camera.
 @onready
 var camera: Camera3D = $"Camera3D"
@@ -23,38 +27,60 @@ var is_flying: bool = true
 var gravity_force: float = 0
 ## Stores information about all resources for player.
 var resource_system: ResourceSystem
-## Items grid.
-@onready
-var items_grid: GridContainer = $"SubViewport/Control/itemsGrid"
-## Current selected item.
-var selected_item: BlockResource
+## Items grid at bottm.
+@onready var inventory_bar: InventoryBar = $"SubViewport/Control/InventoryBar"
+## Separate inventory ui.
+@onready var inventory_ui: Inventory = $"SubViewport/Control/Inventory"
+## Current selected item. May be null.
+var selected_item: BasicObject
+## 
+## items data. May be null.
+var inventory_data: Array[BasicObject] = [] 
+
 ## stub Constructor.
 func _init() -> void:
-	pass
+	inventory_data.resize(INVENTORY_SIZE)
 
 ## real constructor, for using when player already has been added to a scene.
 func init(resource_system: ResourceSystem, world: Node3D) -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == 0 else 0)
 	self.resource_system = resource_system
 	self.world = world
+	
+	inventory_ui.inventory_cell_changed.connect(_on_inventory_cell_changed)
 	# for now primitive items ui.
-	for i: String in resource_system.get_resources():
-		var block: BlockResource = resource_system.get_resource(i)
-		if !selected_item:
-			selected_item = block
-		var panel := PanelContainer.new()
-		panel.custom_minimum_size = Vector2(40, 40)
-		var texture := TextureRect.new()
-		texture.expand_mode = TextureRect.EXPAND_FIT_WIDTH
-		texture.texture = block.texture
-		panel.gui_input.connect(func (event: InputEvent) -> void:
+	var ids := resource_system.get_ids()
+	for i: int in range(len(ids)):
+		var block: BasicObject = resource_system.get_object(ids[i])
+		inventory_data[len(inventory_data) - i - 1] = block
+		
+		
+	# May ui process it by itself. 
+	inventory_ui.init(inventory_data, BAR_SIZE)
+	# Tmp bar init.
+	for i in len(inventory_data.slice(-BAR_SIZE)):
+		var obj: BasicObject = inventory_data.slice(-BAR_SIZE)[i]
+		inventory_bar.set_object(i, obj)
+		if !selected_item && obj:
+			selected_item = obj
+			inventory_bar.set_highlight(i)
+		# Tmp ui handling via mouse, later remove and get keyboard support.
+		inventory_bar.slots[i].gui_input.connect(func (event: InputEvent) -> void:
 			if event.is_action_pressed("lmb"):
-				selected_item = block
+				selected_item = inventory_data.slice(-BAR_SIZE)[i]
+				inventory_bar.set_highlight(i)
 		)
-		panel.add_child(texture)
-		$"SubViewport/Control/itemsGrid".add_child(panel)
 		
 
+## Notified when in inventory ui obj was changed(Like created, moved, etc...).
+## 'obj' may be null.
+func _on_inventory_cell_changed(pos: int, obj: BasicObject) -> void:
+	inventory_data[pos] = obj
+	# Check if we should update bottom bar.
+	var right_items_len := len(inventory_data) - pos
+	if right_items_len <= BAR_SIZE:
+		var bar_pos := BAR_SIZE - right_items_len
+		inventory_bar.set_object(bar_pos, obj)
 
 ## Tries to raycast and get a block with position of colliding, which can be reached.
 func raycast_block() -> OptionalBlockPos:
@@ -102,10 +128,10 @@ func _physics_process(delta: float) -> void:
 			gravity_force = GRAVITY * JUMP_STRENGTH
 	elif Input.is_action_pressed("down"):
 		self.translate_object_local(Vector3(0, -1, 0) * PLAYER_SPEED * delta)
-	elif Input.is_action_just_pressed("rmb"):
+	elif Input.is_action_just_pressed("rmb") && selected_item:
 		var opt_block := raycast_block()
 		if opt_block.has_value():
-			var obj: BlockObject = BlockObject.new(selected_item.id, selected_item.texture)
+			var obj: BlockObject = BlockObject.new(selected_item.id, selected_item.slot_texture())
 			var block := opt_block.get_value()
 			var new_pos: Vector3 = block.get_1().next_block_pos(block.get_2())
 			# Block building inside player
@@ -123,6 +149,7 @@ func _physics_process(delta: float) -> void:
 		is_flying = !is_flying
 	
 	if Input.is_action_just_pressed("e"):
+		inventory_ui.visible = !inventory_ui.visible
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == 0 else 0)
 	
 	if !is_flying && !is_on_floor():
@@ -130,7 +157,6 @@ func _physics_process(delta: float) -> void:
 		 
 	velocity.y = gravity_force
 	move_and_slide()
-	
 	
 	if !is_flying:
 		pass

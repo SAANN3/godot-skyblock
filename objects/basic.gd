@@ -3,8 +3,13 @@ extends RefCounted
 class_name BasicObject
 
 ## Object id.
-var _id: String
+var id: String
 
 ## Init a normal object.
 func _init(id: String) -> void:
-	_id = id
+	self.id = id
+
+## Returns texture, which will be used for a slot ui.
+func slot_texture() -> Texture2D:
+	assert(false, "unimplemented!")
+	return null

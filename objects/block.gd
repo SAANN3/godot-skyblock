@@ -101,3 +101,7 @@ static func is_colliding_with_box(obj_pos: Vector3, cube: CubeHelper) -> bool:
 	var p := CubeHelper.new_from_corner()
 	p.translate(obj_pos)
 	return p.intersects_with_cube(cube)
+
+## Returns texture, which will be used for a slot ui.
+func slot_texture() -> Texture2D:
+	return _texture
