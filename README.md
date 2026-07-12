@@ -27,6 +27,7 @@ Current project structure is:
 ├── services      # Logic classes that i couldn't fit into `objects` folder.
 │   └── resources # Folder for ResourceService, which defines data structures.
 ├── ui            # Ui elements.
+│	└──	inventory # Things related to inventory.  
 ├── storage       # Folder from which at the start items gonna be loaded. In future can be created something like 'mods' folder inside storage.
 │   └── objects   # There are stored resources, related to objects, which are loaded upon startup.
 └── types         # Types that i needed for my preference.

@@ -36,7 +36,7 @@ func get_ids() -> Array[String]:
 func get_objects() -> Dictionary[String, BasicObject]:
 	var out: Dictionary[String, BasicObject] = {}
 	for i: String in _data:
-		pass
+		out[i] = get_object(i)
 	return out
 	
 ## Returns an object for given id.
@@ -46,7 +46,7 @@ func get_object(id: String) -> BasicObject:
 	match res.type:
 		BasicResource.Types.Block:
 			var typed: BlockResource = res
-			return BlockObject.new(typed.id, typed.texture)
+			return BlockObject.new(typed.id, typed.texture, typed.droppable)
 	
 	assert(false, "Unknown object type {0}".format([res.type]))
 	return null	

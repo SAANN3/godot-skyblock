@@ -58,8 +58,8 @@ func translate(pos: Vector3) -> void:
 
 func scale(proportions: Vector3) -> void:
 	var points := to_array()
-	for i in range(len(points)):
-		points[i].point = points[i].point * proportions 
+	for i: PlanePoint in points:
+		i.point = i.point * proportions 
 	
 func find_center() -> Vector3:
 	var sum := Vector3.ZERO

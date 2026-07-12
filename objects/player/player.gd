@@ -32,14 +32,13 @@ var resource_system: ResourceSystem
 ## Separate inventory ui.
 @onready var inventory_ui: Inventory = $"SubViewport/Control/Inventory"
 ## Current selected item. May be null.
-var selected_item: BasicObject
-## 
+var selected_item: InventoryData
 ## items data. May be null.
-var inventory_data: Array[BasicObject] = [] 
+var inventory_data: InventorySystem
 
 ## stub Constructor.
 func _init() -> void:
-	inventory_data.resize(INVENTORY_SIZE)
+	inventory_data = InventorySystem.new(INVENTORY_SIZE)
 
 ## real constructor, for using when player already has been added to a scene.
 func init(resource_system: ResourceSystem, world: Node3D) -> void:
@@ -52,35 +51,38 @@ func init(resource_system: ResourceSystem, world: Node3D) -> void:
 	var ids := resource_system.get_ids()
 	for i: int in range(len(ids)):
 		var block: BasicObject = resource_system.get_object(ids[i])
-		inventory_data[len(inventory_data) - i - 1] = block
+		inventory_data.add_item(block)
 		
 		
-	# May ui process it by itself. 
+	# Let ui process it by itself. 
 	inventory_ui.init(inventory_data, BAR_SIZE)
 	# Tmp bar init.
-	for i in len(inventory_data.slice(-BAR_SIZE)):
-		var obj: BasicObject = inventory_data.slice(-BAR_SIZE)[i]
-		inventory_bar.set_object(i, obj)
+	var bar_pos := BAR_SIZE - 1
+	for i in range(INVENTORY_SIZE - 1, INVENTORY_SIZE - BAR_SIZE - 1, -1):
+		var obj: InventoryData = inventory_data.get_object(i)
+		inventory_bar.set_object(bar_pos, obj)
 		if !selected_item && obj:
 			selected_item = obj
-			inventory_bar.set_highlight(i)
+			inventory_bar.set_highlight(bar_pos)
 		# Tmp ui handling via mouse, later remove and get keyboard support.
-		inventory_bar.slots[i].gui_input.connect(func (event: InputEvent) -> void:
+		inventory_bar.slots[bar_pos].gui_input.connect(func (event: InputEvent) -> void:
 			if event.is_action_pressed("lmb"):
-				selected_item = inventory_data.slice(-BAR_SIZE)[i]
-				inventory_bar.set_highlight(i)
+				var data := inventory_data.get_object(i)
+				selected_item = data
+				inventory_bar.set_highlight(bar_pos)
 		)
+		bar_pos -= 1
 		
 
 ## Notified when in inventory ui obj was changed(Like created, moved, etc...).
 ## 'obj' may be null.
-func _on_inventory_cell_changed(pos: int, obj: BasicObject) -> void:
-	inventory_data[pos] = obj
+func _on_inventory_cell_changed(pos: int, data: InventoryData) -> void:
+	inventory_data.set_object(pos, data)
 	# Check if we should update bottom bar.
-	var right_items_len := len(inventory_data) - pos
+	var right_items_len := inventory_data.size() - pos
 	if right_items_len <= BAR_SIZE:
 		var bar_pos := BAR_SIZE - right_items_len
-		inventory_bar.set_object(bar_pos, obj)
+		inventory_bar.set_object(bar_pos, data)
 
 ## Tries to raycast and get a block with position of colliding, which can be reached.
 func raycast_block() -> OptionalBlockPos:
@@ -92,7 +94,7 @@ func raycast_block() -> OptionalBlockPos:
 	var result := get_world_3d().direct_space_state.intersect_ray(query)
 	if !result.is_empty():
 		var value: Variant = result["collider"]
-		if value is Node3D:
+		if value is StaticBody3D:
 			var staticBody3D: StaticBody3D = value
 			var maybe_block := staticBody3D.get_parent()
 			if maybe_block.has_meta("self") && maybe_block.get_meta("self") is BlockObject:
@@ -115,7 +117,6 @@ func _process(delta: float) -> void:
 	
 ## Process user physics	with inputs.
 func _physics_process(delta: float) -> void:
-	var texture := preload("res://storage/objects/grass.tres")
 	
 	if is_on_floor():
 		gravity_force = 0
@@ -131,11 +132,12 @@ func _physics_process(delta: float) -> void:
 	elif Input.is_action_just_pressed("rmb") && selected_item:
 		var opt_block := raycast_block()
 		if opt_block.has_value():
-			var obj: BlockObject = BlockObject.new(selected_item.id, selected_item.slot_texture())
+			var obj: BlockObject = (selected_item.object as BlockObject).clone()
 			var block := opt_block.get_value()
 			var new_pos: Vector3 = block.get_1().next_block_pos(block.get_2())
 			# Block building inside player
 			if !BlockObject.is_colliding_with_box(new_pos, _to_cube_col()):
+				selected_item.amount -= 1
 				obj.place_block(new_pos, world)
 			
 	elif Input.is_action_pressed("lmb"):
@@ -151,6 +153,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("e"):
 		inventory_ui.visible = !inventory_ui.visible
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == 0 else 0)
+	
+	if Input.is_action_just_pressed("q"):
+		pass
 	
 	if !is_flying && !is_on_floor():
 		gravity_force = clampf(gravity_force - GRAVITY, -120, 200)
@@ -168,3 +173,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		var diff: Vector2 = -pos
 		camera.rotation.x = clampf(camera.rotation.x + (diff.y * SENSIVITY), deg_to_rad(-90), deg_to_rad(90))
 		rotate_y(diff.x * SENSIVITY)
+
+## Allows to pick up a dropped item
+func _on_pickup_range_body_entered(body: Node3D) -> void:
+	if body is DroppedItem:
+		var item: DroppedItem = body
+		if inventory_data.can_insert(item.view_obj()):
+			inventory_data.add_item(item.pick_obj())

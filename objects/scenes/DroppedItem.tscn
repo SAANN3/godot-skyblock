@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bwtahabibaq25"]
+
+[ext_resource type="Script" uid="uid://b2mrx5onetcv1" path="res://objects/droppedItem.gd" id="1_ekxse"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ekxse"]
+
+[node name="DroppedObject" type="RigidBody3D" unique_id=85405560]
+collision_layer = 2
+collision_mask = 3
+can_sleep = false
+script = ExtResource("1_ekxse")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1681216348]
+mesh = SubResource("ArrayMesh_ekxse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1316542863 groups=["droppedItem"]]

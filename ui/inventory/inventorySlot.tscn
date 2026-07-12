@@ -29,3 +29,10 @@ theme_override_constants/margin_bottom = 5
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer" unique_id=892801765]
 layout_mode = 2
 expand_mode = 1
+
+[node name="amount" type="Label" parent="PanelContainer/MarginContainer" unique_id=1146703972]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 12
+text = " 999"

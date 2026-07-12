@@ -13,3 +13,10 @@ func _init(id: String) -> void:
 func slot_texture() -> Texture2D:
 	assert(false, "unimplemented!")
 	return null
+
+## 'Drops' item in the 'world'. 
+## world - Where we drop an item.
+## direction - in which direction should item drop.
+## position - at which position object should be created
+func drop(world: Node3D, direction: Vector3, position: Vector3) -> void:
+	DroppedItem.create(self, world, position)

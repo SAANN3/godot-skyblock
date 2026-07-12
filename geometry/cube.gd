@@ -51,7 +51,7 @@ static func new_from_corner() -> CubeHelper:
 func scale(proportions: Vector3 = Vector3(1, 1, 1)) -> void:
 	for i: PlaneHelper in to_array():
 		i.scale(proportions)
-
+	
 ## Translates (moves) current cube to given position.
 func translate(pos: Vector3) -> void:
 	for i: PlaneHelper in to_array():
@@ -60,7 +60,7 @@ func translate(pos: Vector3) -> void:
 ## 'Compiles' cube.
 func to_surface_struct() -> SurfaceStruct:
 	var out: SurfaceStruct = null
-	for i: PlaneHelper in [_up, _down, _left, _right, _front, _back]:
+	for i: PlaneHelper in to_array():
 		if i == null:
 			continue
 		if out == null:
@@ -109,10 +109,10 @@ func intersects_with_point(point: Vector3) -> bool:
 ## Returns iterator for all sides of cube.
 func to_array() -> Array[PlaneHelper]:
 	return [
-		_up,
-		_down,
-		_back,
-		_left,
-		_front,
-		_right
+		_up, 
+		_down, 
+		_left, 
+		_right, 
+		_front, 
+		_back
 	]

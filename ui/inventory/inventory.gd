@@ -13,20 +13,23 @@ class_name Inventory
 class SlotInfo:
 	var slot: InventorySlot
 	var position: int
-	func _init(slot: InventorySlot, position: int) -> void:
+	var amount: int
+	func _init(slot: InventorySlot, position: int, amount: int) -> void:
 		self.slot = slot
 		self.position = position
+		self.amount = amount
+		
 ## Selected slot that we are currently holding.
 var currently_holding: SlotInfo = null
 ## A signal emitted when a cell was modified from ui side.
 ## Returns position of cell and obj, that currently inside of it.
 ## Obj can be null.
-signal inventory_cell_changed(pos: int, obj: BasicObject)
+signal inventory_cell_changed(pos: int, obj: InventoryData)
 
 ## Init, after we already have been added to the scene.
 ## 'inventory' - current user inventory state from which we will create a ui slots.
-func init(items: Array[BasicObject], bar_size: int) -> void:
-	var inventory_len: int = len(items)
+func init(inventory: InventorySystem, bar_size: int) -> void:
+	var inventory_len: int = inventory.size()
 	# create slots.
 	var scene := preload("res://ui/inventory/inventorySlot.tscn")
 	if inventory_len - bar_size > 0:
@@ -44,12 +47,12 @@ func init(items: Array[BasicObject], bar_size: int) -> void:
 			_bar_slot_container.add_child(slot)
 			_inventory_slots.append(slot)
 	# Fill them.
-	for i in len(items):
-		set_inventory_object(i, items[i])
+	for i in range(inventory_len):
+		set_inventory_object(i, inventory.get_object(i))
 	
 ## Sets objects for slot in bar.
 ## 'object' may be null.
-func set_inventory_object(pos: int, object: BasicObject) -> void:
+func set_inventory_object(pos: int, object: InventoryData) -> void:
 	_inventory_slots[pos].set_object(object)
 
 
@@ -82,6 +85,6 @@ func _mouse_inside_slot() -> SlotInfo:
 	for i: int in range(len(_inventory_slots)):
 		var item := _inventory_slots[i]
 		if item.get_global_rect().has_point(mouse_pos):
-			return SlotInfo.new(item, i)
+			return SlotInfo.new(item, i, 1)
 	
 	return null

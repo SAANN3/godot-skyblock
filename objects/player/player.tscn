@@ -9,7 +9,11 @@ margin = 0.005
 radius = 0.35
 height = 1.95
 
-[node name="Player" type="CharacterBody3D" unique_id=333527802]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ssrue"]
+radius = 1.0
+height = 2.5
+
+[node name="Player" type="CharacterBody3D" unique_id=333527802 groups=["player"]]
 script = ExtResource("1_cqmt1")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=637594330]
@@ -43,7 +47,13 @@ beta v0.0.1 - 2026-06-08:
     beta release
 beta v0.0.2 - 2026-06-22:
     added small ui elements, like 
-inventory and primitive menu."
+inventory and primitive menu.
+
+beta v0.0.3 - 2026-07-12:
+    Added count of items in 
+inventory.
+	Blocks now drops items,
+that you can pick up!"
 
 [node name="Label" type="Label" parent="SubViewport/Control" unique_id=1006900201]
 layout_mode = 1
@@ -96,3 +106,11 @@ grow_vertical = 0
 visible = false
 layout_mode = 1
 mouse_filter = 2
+
+[node name="pickupRange" type="Area3D" parent="." unique_id=1437987719]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pickupRange" unique_id=67807017]
+shape = SubResource("CapsuleShape3D_ssrue")
+
+[connection signal="body_entered" from="pickupRange" to="." method="_on_pickup_range_body_entered"]

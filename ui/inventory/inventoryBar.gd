@@ -21,5 +21,5 @@ func set_highlight(pos: int) -> void:
 	slots[pos].set_highlight(true)
  
 ## Sets objects for slot
-func set_object(pos: int, object: BasicObject = null) -> void:
+func set_object(pos: int, object: InventoryData = null) -> void:
 	slots[pos].set_object(object)
