@@ -4,6 +4,7 @@
 
 [node name="InventorySlot" type="Control" unique_id=2022918848]
 custom_minimum_size = Vector2(40, 40)
+custom_maximum_size = Vector2(40, 40)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 10.0
@@ -36,3 +37,5 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 12
 text = " 999"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BlockResource" format=3 uid="uid://dlt54xitj6vuc"]
+
+[ext_resource type="Script" uid="uid://bcuglu7j5qict" path="res://services/crafting/recipe.gd" id="1_f0x1m"]
+[ext_resource type="Script" uid="uid://b7l1n6sdq0w5d" path="res://services/resources/block.gd" id="1_qcx0u"]
+[ext_resource type="Script" uid="uid://daeig6pw0xr2f" path="res://services/crafting/itemData.gd" id="2_du454"]
+[ext_resource type="Resource" uid="uid://c5g507s3gpqdt" path="res://storage/objects/wood.tres" id="3_0rwx3"]
+
+[sub_resource type="Resource" id="Resource_x6hui"]
+script = ExtResource("2_du454")
+object = ExtResource("3_0rwx3")
+metadata/_custom_type_script = "uid://daeig6pw0xr2f"
+
+[sub_resource type="Resource" id="Resource_owd2l"]
+script = ExtResource("2_du454")
+amount = 4
+metadata/_custom_type_script = "uid://daeig6pw0xr2f"
+
+[sub_resource type="Resource" id="Resource_pnivr"]
+script = ExtResource("1_f0x1m")
+items = Array[ExtResource("2_du454")]([SubResource("Resource_x6hui")])
+out_item = SubResource("Resource_owd2l")
+metadata/_custom_type_script = "uid://bcuglu7j5qict"
+
+[sub_resource type="Gradient" id="Gradient_qcx0u"]
+offsets = PackedFloat32Array(0, 0.027777778, 0.044444446)
+colors = PackedColorArray(0, 0, 0, 1, 0.44420952, 0.2249842, 0.07704989, 1, 0.44420952, 0.2249842, 0.07704989, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o75ig"]
+gradient = SubResource("Gradient_qcx0u")
+
+[resource]
+script = ExtResource("1_qcx0u")
+texture = SubResource("GradientTexture1D_o75ig")
+id = "plank"
+craft_recipes = Array[ExtResource("1_f0x1m")]([SubResource("Resource_pnivr")])
+metadata/_custom_type_script = "uid://b7l1n6sdq0w5d"

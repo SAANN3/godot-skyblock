@@ -16,6 +16,10 @@ var _highlighted: bool
 var _ui_pos: Vector2 = Vector2.ZERO
 ## Are we currently following mouse?
 var _drag_mode: bool = false
+
+## Signal, that emitted, when this inventorySlot recieved a click
+signal clicked(this: InventorySlot)
+	
 ## Higlight a panel, showing that current slot is 'active'.
 func set_highlight(higlighted: bool) -> void:
 	_highlighted = higlighted
@@ -28,22 +32,27 @@ func set_highlight(higlighted: bool) -> void:
 	
 ## Replace object for panel. 
 ## 'object' may be null.
-func set_object(object: InventoryData = null) -> void:
+func set_inventory_data(data: InventoryData = null) -> void:
 	if _object:
 		_object.amount_changed.disconnect(_set_amount)
 		
-	_object = object
-	if object:
+	_object = data
+	if data:
 		_object.amount_changed.connect(_set_amount)
-		_set_amount(object.amount)
+		_set_amount(data.amount)
 		_amount.show()
-		_texture_rect.texture = object.object.slot_texture()
+		_texture_rect.texture = data.object.slot_texture()
 	else:
 		_amount.hide()
 		_texture_rect.texture = null
 
-## Returns object that currently in slot. May be null.
-func get_object() -> InventoryData:
+## Sets object.
+## May be used as alternative to set_inventory_data.
+func set_object(object: BasicObject, amount: int = 1) -> void:
+	set_inventory_data(InventoryData.new(object, amount))
+
+## Returns inventory data that currently in slot. May be null.
+func get_inventory_data() -> InventoryData:
 	return _object
 
 ## Return ui node, that contain only ui related nodes for object, and not panel.
@@ -60,6 +69,10 @@ func set_drag_mode(enabled: bool) -> void:
 		get_ui_object().position = _ui_pos
 		_drag_mode = false
 
+## Shows/hides text label
+func set_amount_visibility(visible: bool) -> void:
+	_amount.visible = visible
+
 ## Ui processing.
 func _process(delta: float) -> void:
 	if _drag_mode == true:
@@ -69,3 +82,8 @@ func _process(delta: float) -> void:
 func _set_amount(amount: int) -> void:
 	_amount.text = "{0}".format([amount])
 	
+
+## Handle gui events.
+func _on_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("lmb"):
+		clicked.emit(self)

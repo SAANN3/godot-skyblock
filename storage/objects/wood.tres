@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="BlockResource" format=3 uid="uid://c5g507s3gpqdt"]
 
-[ext_resource type="Script" uid="uid://b7l1n6sdq0w5d" path="res://service/resources/block.gd" id="1_newyu"]
+[ext_resource type="Script" uid="uid://b7l1n6sdq0w5d" path="res://services/resources/block.gd" id="1_newyu"]
+[ext_resource type="Script" uid="uid://bcuglu7j5qict" path="res://services/crafting/recipe.gd" id="1_x6hui"]
 
 [sub_resource type="Gradient" id="Gradient_0o13y"]
 offsets = PackedFloat32Array(0)

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://ga035onjp58t"]
 
 [ext_resource type="Script" uid="uid://ck4hnlm62xdgf" path="res://ui/inventory/inventoryBar.gd" id="1_rwxva"]
-[ext_resource type="PackedScene" uid="uid://cvggetn7u5it4" path="res://ui/inventory/inventorySlot.tscn" id="2_811t0"]
 
 [node name="InventoryBar" type="MarginContainer" unique_id=201634619]
 anchors_preset = 8
@@ -19,34 +18,4 @@ size_flags_horizontal = 4
 script = ExtResource("1_rwxva")
 
 [node name="slots" type="HBoxContainer" parent="." unique_id=892919518]
-layout_mode = 2
-
-[node name="InventorySlot" parent="slots" unique_id=2022918848 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot2" parent="slots" unique_id=1861573160 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot3" parent="slots" unique_id=1150593715 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot4" parent="slots" unique_id=741045670 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot5" parent="slots" unique_id=938108070 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot6" parent="slots" unique_id=289948396 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot7" parent="slots" unique_id=1016114786 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot8" parent="slots" unique_id=1925474760 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot9" parent="slots" unique_id=1081106041 instance=ExtResource("2_811t0")]
-layout_mode = 2
-
-[node name="InventorySlot10" parent="slots" unique_id=408011909 instance=ExtResource("2_811t0")]
 layout_mode = 2

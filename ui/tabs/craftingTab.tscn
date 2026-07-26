@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://g1eml3hp25u7"]
+
+[ext_resource type="Script" uid="uid://eilmlmcq0ydj" path="res://ui/tabs/craftingTab.gd" id="1_84ue8"]
+[ext_resource type="PackedScene" uid="uid://cvggetn7u5it4" path="res://ui/inventory/inventorySlot.tscn" id="2_f0nk2"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_wgew6"]
+
+[node name="CraftingTab" type="VBoxContainer" unique_id=1301269902]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_84ue8")
+_icon = ExtResource("2_wgew6")
+_name = "Crafting"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="." unique_id=2032030162]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Objects" type="ScrollContainer" parent="VBoxContainer" unique_id=1370960593]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Objects" unique_id=1651951828]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Objects/VBoxContainer" unique_id=1287004880]
+layout_mode = 2
+text = "Objects list: |"
+
+[node name="CraftingObjects" type="VBoxContainer" parent="VBoxContainer/Objects/VBoxContainer" unique_id=844559673]
+layout_mode = 2
+
+[node name="Recipes" type="ScrollContainer" parent="VBoxContainer" unique_id=838016445]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Recipes" unique_id=660597609]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Recipes/VBoxContainer" unique_id=1228594584]
+layout_mode = 2
+text = "Recipes:"
+
+[node name="RecipesList" type="VBoxContainer" parent="VBoxContainer/Recipes/VBoxContainer" unique_id=14001315]
+layout_mode = 2
+
+[node name="tmp" type="HBoxContainer" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList" unique_id=969132035]
+visible = false
+layout_mode = 2
+
+[node name="itemsContainer" type="GridContainer" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp" unique_id=1318046762]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 4
+
+[node name="InventorySlot" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp/itemsContainer" unique_id=2022918848 instance=ExtResource("2_f0nk2")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp/itemsContainer" unique_id=864441255 instance=ExtResource("2_f0nk2")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp/itemsContainer" unique_id=1895865648 instance=ExtResource("2_f0nk2")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp/itemsContainer" unique_id=437614227 instance=ExtResource("2_f0nk2")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp" unique_id=1564925381]
+layout_mode = 2
+text = "->"
+
+[node name="output" parent="VBoxContainer/Recipes/VBoxContainer/RecipesList/tmp" unique_id=238853995 instance=ExtResource("2_f0nk2")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1118997527]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+text = "How to use:
+Click on object in 'object list'
+Click on output item in 'recipes' 
+(item after '->')"

@@ -4,9 +4,9 @@ extends Control
 class_name Inventory
 
 ## Slots container for main inventory.
-@onready var _slot_container: GridContainer = $"VBoxContainer/Slots"
+@onready var _slot_container: GridContainer = $"PanelContainer/VBoxContainer/Slots"
 ## Slots container for bottom bar.
-@onready var _bar_slot_container: GridContainer = $"VBoxContainer/bar"
+@onready var _bar_slot_container: GridContainer = $"PanelContainer/VBoxContainer/bar"
 ## Slots for inventory.
 @onready var _inventory_slots: Array[InventorySlot] = []
 ## Struct data, for pairing slot and its position.
@@ -20,11 +20,13 @@ class SlotInfo:
 		self.amount = amount
 		
 ## Selected slot that we are currently holding.
-var currently_holding: SlotInfo = null
+var _currently_holding: SlotInfo = null
 ## A signal emitted when a cell was modified from ui side.
 ## Returns position of cell and obj, that currently inside of it.
 ## Obj can be null.
 signal inventory_cell_changed(pos: int, obj: InventoryData)
+## Player or any other entity inventory.
+var _inventory: InventorySystem
 
 ## Init, after we already have been added to the scene.
 ## 'inventory' - current user inventory state from which we will create a ui slots.
@@ -49,35 +51,40 @@ func init(inventory: InventorySystem, bar_size: int) -> void:
 	# Fill them.
 	for i in range(inventory_len):
 		set_inventory_object(i, inventory.get_object(i))
+	inventory.cell_changed.connect(set_inventory_object)
+	_inventory = inventory
 	
 ## Sets objects for slot in bar.
 ## 'object' may be null.
 func set_inventory_object(pos: int, object: InventoryData) -> void:
-	_inventory_slots[pos].set_object(object)
+	_inventory_slots[pos].set_inventory_data(object)
 
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("lmb"):
 		var mouse_slot := _mouse_inside_slot()
 		if mouse_slot:
-			currently_holding = mouse_slot
+			_currently_holding = mouse_slot
 			mouse_slot.slot.set_drag_mode(true)
 	elif Input.is_action_pressed("lmb"):
-		if currently_holding:
-			var slot_ui := currently_holding.slot.get_ui_object()
+		if _currently_holding:
+			var slot_ui := _currently_holding.slot.get_ui_object()
 			slot_ui.global_position = get_global_mouse_position()
 	elif Input.is_action_just_released("lmb"):
 		var mouse_slot := _mouse_inside_slot()
-		if currently_holding:
-			currently_holding.slot.set_drag_mode(false)
-			if mouse_slot && mouse_slot.slot != currently_holding.slot:
-				var next_object := mouse_slot.slot.get_object()					
-				mouse_slot.slot.set_object(currently_holding.slot.get_object())
-				currently_holding.slot.set_object(next_object)
-				inventory_cell_changed.emit(mouse_slot.position, mouse_slot.slot.get_object())
-				inventory_cell_changed.emit(currently_holding.position, currently_holding.slot.get_object())
-			currently_holding = null
-		
+		if _currently_holding:
+			_currently_holding.slot.set_drag_mode(false)
+			if mouse_slot && mouse_slot.slot != _currently_holding.slot:
+				var next_object := mouse_slot.slot.get_inventory_data()					
+				#mouse_slot.slot.set_inventory_data(currently_holding.slot.get_inventory_data())
+				#currently_holding.slot.set_inventory_data(next_object)
+				_inventory.set_object(mouse_slot.position, _currently_holding.slot.get_inventory_data())
+				_inventory.set_object(_currently_holding.position, next_object)
+			_currently_holding = null
+			
+## Fired when inventory state was updated outside of us 
+func _on_inventory_cell_changed(pos: int, data: InventoryData) -> void:
+	set_inventory_object(pos, data)
 	
 ## Calculates in which slot mouse currently is. May return null.
 func _mouse_inside_slot() -> SlotInfo:

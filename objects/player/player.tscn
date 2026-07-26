@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c02butvu7otd1" path="res://objects/player/player.gd" id="1_cqmt1"]
 [ext_resource type="PackedScene" uid="uid://ga035onjp58t" path="res://ui/inventory/inventoryBar.tscn" id="2_g7ett"]
+[ext_resource type="PackedScene" uid="uid://cdbtbj1snswg4" path="res://ui/tabs/tabSystem.tscn" id="3_jnjyq"]
 [ext_resource type="PackedScene" uid="uid://dybodknfa54oq" path="res://ui/inventory/inventory.tscn" id="3_ssrue"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cqmt1"]
@@ -102,9 +103,31 @@ offset_top = -40.0
 offset_bottom = 0.0
 grow_vertical = 0
 
-[node name="Inventory" parent="SubViewport/Control" unique_id=1086160268 instance=ExtResource("3_ssrue")]
+[node name="InventoryMenu" type="MarginContainer" parent="SubViewport/Control" unique_id=1192050776]
 visible = false
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="InventoryMenuVbox" type="VBoxContainer" parent="SubViewport/Control/InventoryMenu" unique_id=599961622]
+layout_mode = 2
+
+[node name="TabSystem" parent="SubViewport/Control/InventoryMenu/InventoryMenuVbox" unique_id=2035787717 instance=ExtResource("3_jnjyq")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Inventory" parent="SubViewport/Control/InventoryMenu/InventoryMenuVbox" unique_id=1631524957 instance=ExtResource("3_ssrue")]
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="pickupRange" type="Area3D" parent="." unique_id=1437987719]

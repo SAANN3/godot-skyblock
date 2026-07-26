@@ -17,7 +17,10 @@ var _mapped_data: Dictionary[String, InventoryData] = {}
 ## Empty slots that can be filled with any item.
 var _empty_slots: int 
 
-
+## Signal emitted when a cell was changed, can be used for ui subscribing to it.
+## Note that it doesnt emitted when amount of some existing item was changed.
+## It will be emitted only when we replace a cell InventoryData with new.
+signal cell_changed(pos: int, data: InventoryData)
 
 ## Constructor
 func _init(size: int, data: Array[InventoryData] = []) -> void:
@@ -35,10 +38,10 @@ func _init(size: int, data: Array[InventoryData] = []) -> void:
 	self._size = size
 
 ## Will add a new object to inventory.
-func add_item(object: BasicObject) -> void:
+func add_item(object: BasicObject, amount: int = 1) -> void:
 	if _mapped_data.has(object.id):
 		# TODO handle later max stack amount.
-		_mapped_data[object.id].amount += 1
+		_mapped_data[object.id].amount += amount
 		return
 	elif _empty_slots > 0:
 		# Maybe optimize instead of looping through inventory(?)
@@ -46,9 +49,11 @@ func add_item(object: BasicObject) -> void:
 			var item: InventoryData = _data[pos]
 			if item == null:
 				_empty_slots -= 1
-				_data[pos] = InventoryData.new(object, 1)
+				_data[pos] = InventoryData.new(object, amount)
 				_mapped_data[object.id] = _data[pos]
+				cell_changed.emit(pos, _data[pos])
 				return
+				
 	assert(false, "Theres not enough slots!")
 	
 ## Returns inventory size.
@@ -72,6 +77,31 @@ func get_object(pos: int) -> InventoryData:
 	return _data[pos]
 	
 ## Inserts object into given position.
-## This function ignores what was inside cell previously.
+## This function ignores what was previously inside the cell.
 func set_object(pos: int, data: InventoryData = null) -> void:
 	_data[pos] = data
+	cell_changed.emit(pos, data)
+
+## Checks if object with given amount can be taken from inventory.
+func can_take(object: BasicObject, amount: int) -> bool:
+	if _mapped_data.has(object.id):
+		return _mapped_data[object.id].amount >= amount
+	else:
+		return false
+		
+## Takes an amount of given object from inventory.
+## Assumes that object exists in inventory and its value equal or greater than amout, resulting crash otherwise.
+func take(object: BasicObject, amount: int) -> void:
+	assert(_mapped_data.has(object.id), "Doesn't have object in inventory!")
+	var obj := _mapped_data[object.id]
+	assert(obj.amount >= amount, "Doesn't have such great amount.")
+	
+	obj.amount -= amount
+	if obj.amount == 0:
+		_mapped_data.erase(object.id)
+		# How much of perfomance do we take by sometimes iterating via all full array?
+		# If this will become an issue im add position into mapped_data 
+		for i: int in range(_size):
+			if _data[i] != null && _data[i].object.id == object.id && _data[i].amount == 0:
+				set_object(i, null)
+				break

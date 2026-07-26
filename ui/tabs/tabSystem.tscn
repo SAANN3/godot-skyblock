@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cdbtbj1snswg4"]
+
+[ext_resource type="Script" uid="uid://gd4aoc2y6w1t" path="res://ui/tabs/tabSystem.gd" id="1_2hb2k"]
+
+[node name="TabSystem" type="PanelContainer" unique_id=2035787717]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2hb2k")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=820234664]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="VBoxContainer" parent="MarginContainer" unique_id=563166411]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TabsIconsContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer" unique_id=29981668]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/TabsIconsContainer" unique_id=1798694323]
+layout_mode = 2
+
+[node name="label" type="Label" parent="MarginContainer/PanelContainer" unique_id=1124006405]
+layout_mode = 2
+text = "tab system"
+horizontal_alignment = 1
+
+[node name="MainTabUi" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=530304940]
+layout_mode = 2
+size_flags_vertical = 3
