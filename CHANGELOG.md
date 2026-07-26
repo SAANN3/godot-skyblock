@@ -21,7 +21,7 @@ I guess gonna keep some form of changelog here.
 
 ![t](./readme/funny_tower_0_0_2.gif)
 
-## [0.0.3] - 2026-07-12
+## [0.0.4] - 2026-07-26
 
 ### What's new.
 
