@@ -28,4 +28,12 @@ I guess gonna keep some form of changelog here.
 - Added tabs to ui.
 - Added crafting system and a corresponding tab in inventory.
 
+## [0.0.4.1] - 2026-07-26
+
+### Fixes
+- Changed changelog date.
+
+### Changes
+- Changelog no longer duplicated in ui.
+
 

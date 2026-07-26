@@ -35,27 +35,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="changelog" type="Label" parent="SubViewport/Control" unique_id=991732999]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -265.0
-offset_bottom = 413.0
-grow_horizontal = 0
-text = "changelog
-beta v0.0.1 - 2026-06-08:
-    beta release
-beta v0.0.2 - 2026-06-22:
-    added small ui elements, like 
-inventory and primitive menu.
-
-beta v0.0.3 - 2026-07-12:
-    Added count of items in 
-inventory.
-	Blocks now drops items,
-that you can pick up!"
-
 [node name="Label" type="Label" parent="SubViewport/Control" unique_id=1006900201]
 layout_mode = 1
 offset_right = 70.0
